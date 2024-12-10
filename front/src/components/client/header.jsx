@@ -1,19 +1,13 @@
-import { useParams } from 'react-router-dom';
 import { formatMoney } from '../../hooks/format-money';
-import useTitle from '../../hooks/useTitle';
 import Breadcrumbs from '../Breadcrumbs';
-import { useClientDetail } from '../../context/client-detail-context';
 import NavCliente from './nav-client';
+import { useClientDetail } from '../../context/client-detail-context';
+import LinkGoogleMaps from '../../hooks/link-google-maps';
 
-const details = true;
-
-export default function ClientHeader({ clientStatus }) {
-  useTitle(`Cliente ${clientStatus.nombre}`);
-  const { id } = useParams();
+export default function ClientHeader({ client, id }) {
   const {
     view: { details },
   } = useClientDetail();
-
   return (
     <>
       <div className="flex flex-row justify-center items-center py-2 rounded-md bg-gray-800  ">
@@ -37,36 +31,40 @@ export default function ClientHeader({ clientStatus }) {
         <div className="flex flex-row gap-4 items-start justify-between px-4 py-2">
           <div className="flex flex-col">
             <div className="flex flex-row items-center gap-3">
-              <h3 className="text-3xl font-bold">{clientStatus.nombre}</h3>
+              <h3 className="text-3xl font-bold">{client.nombre}</h3>
               <span
                 className={`${
-                  !clientStatus.estado
+                  !client.estado
                     ? 'text-red-500'
-                    : clientStatus.saldo < 0
+                    : client.saldo < 0
                       ? 'text-orange-500'
                       : 'text-green-500'
                 } flex flex-row items-center gap-1`}
               >
                 <div
                   className={`${
-                    !clientStatus.estado
+                    !client.estado
                       ? 'bg-red-500'
-                      : clientStatus.saldo < 0
+                      : client.saldo < 0
                         ? 'bg-orange-500'
                         : 'bg-green-500'
                   } w-4 h-4 rounded-full`}
                 ></div>
-                {clientStatus.estado ? 'Activo' : 'Suspendido'}
+                {client.estado ? 'Activo' : 'Suspendido'}
               </span>
             </div>
             <div className="flex flex-row gap-2 mt-2 text-sm mb-2">
-              <p>{clientStatus.direccion}</p>
+              <p>
+                <LinkGoogleMaps direccion={client.direccion}>
+                  {client.direccion}
+                </LinkGoogleMaps>
+              </p>
               <span
                 className={`${
-                  clientStatus.saldo < 0 ? 'text-red-500' : 'text-green-500'
+                  client.saldo < 0 ? 'text-red-500' : 'text-green-500'
                 } flex flex-row items-center gap-1`}
               >
-                Saldo: {formatMoney(clientStatus.saldo)}$
+                Saldo: {formatMoney(client.saldo)}$
               </span>
             </div>
           </div>

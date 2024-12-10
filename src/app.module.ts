@@ -9,6 +9,7 @@ import { Router } from './entities/router.entity';
 import { Sector } from './entities/sector.entity';
 import { Service } from './entities/service.entity';
 import { Client } from './entities/client.entity';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { Client } from './entities/client.entity';
       exclude: ['/api/*'],
     }),
     ClientsModule,
+    ServicesModule,
   ],
 })
 export class AppModule {}

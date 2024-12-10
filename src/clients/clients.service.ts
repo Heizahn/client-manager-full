@@ -41,8 +41,13 @@ export class ClientsService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} client`;
+  async findOne(id: string): Promise<Client> {
+    return await this.clientRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['sector', 'plan', 'router', 'created_by'],
+    });
   }
 
   update(id: number, updateClientDto: UpdateClientDto) {
