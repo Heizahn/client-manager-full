@@ -10,6 +10,7 @@ import { Sector } from './entities/sector.entity';
 import { Service } from './entities/service.entity';
 import { Client } from './entities/client.entity';
 import { ServicesModule } from './services/services.module';
+import { ServiceReceivableModule } from './service_receivable/service_receivable.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ServicesModule } from './services/services.module';
     }),
     ClientsModule,
     ServicesModule,
+    ServiceReceivableModule,
   ],
 })
 export class AppModule {}

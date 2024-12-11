@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClientDto } from './dto/create-client.dto';
-import { UpdateClientDto } from './dto/update-client.dto';
 import { Repository } from 'typeorm';
 import { Client } from '../entities/client.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,7 +10,7 @@ export class ClientsService {
     private readonly clientRepository: Repository<Client>,
   ) {}
 
-  create(createClientDto: CreateClientDto) {
+  create() {
     return 'This action adds a new client';
   }
 
@@ -50,7 +48,7 @@ export class ClientsService {
     });
   }
 
-  update(id: number, updateClientDto: UpdateClientDto) {
+  update(id: number) {
     return `This action updates a #${id} client`;
   }
 

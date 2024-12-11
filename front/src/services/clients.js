@@ -20,6 +20,14 @@ const getClient = async (id) => {
   return await response.json();
 };
 
+const getClientServices = async (id) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const response = await fetch(apiUrl + '/api/services');
+  if (!response.ok) {
+    throw new Error('Error en la petición');
+  }
+};
+
 export const useClients = () => {
   return useQuery({
     queryKey: ['clients'],

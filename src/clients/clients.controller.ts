@@ -18,7 +18,7 @@ export class ClientsController {
 
   @Post()
   create(@Body() createClientDto: CreateClientDto) {
-    return this.clientsService.create(createClientDto);
+    return this.clientsService.create();
   }
 
   @Get()
@@ -33,7 +33,7 @@ export class ClientsController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
-    return this.clientsService.update(+id, updateClientDto);
+    return this.clientsService.update(+id);
   }
 
   @Delete(':id')
