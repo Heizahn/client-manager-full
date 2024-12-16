@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import {  useQuery,  } from '@tanstack/react-query';
+
 
 const getClients = async () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -8,6 +9,24 @@ const getClients = async () => {
   }
 
   return await response.json();
+};
+
+
+export const crateClient = async (data) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const response = await fetch(apiUrl + '/api/clients', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error('Error en la petición');
+  }
+
+  return response;
 };
 
 const getClient = async (id) => {
@@ -44,6 +63,7 @@ export const useClients = () => {
     refetchOnReconnect: true,
   });
 };
+
 
 export const useClientById = (id) => {
   return useQuery({

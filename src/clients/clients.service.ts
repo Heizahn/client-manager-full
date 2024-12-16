@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Client } from '../entities/client.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateClientDto } from './dto/create-client.dto';
 
 @Injectable()
 export class ClientsService {
@@ -10,8 +11,10 @@ export class ClientsService {
     private readonly clientRepository: Repository<Client>,
   ) {}
 
-  create() {
-    return 'This action adds a new client';
+  async create(createClientDto: CreateClientDto) {
+    const client = this.clientRepository.create(createClientDto);
+    await this.clientRepository.save(client);
+    return JSON.stringify({message: 'Cliente creado exitosamente'});  
   }
 
   async findAll(): Promise<Client[]> {

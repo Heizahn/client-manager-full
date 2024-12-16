@@ -5,6 +5,7 @@ import { ClientsProvider } from '../context/clients-context';
 import SearchClient from '../components/Table/search-client';
 import NavFilter from '../components/filters/navFilter';
 import ClientsTable from '../components/Table/clients-table';
+import ShowFormNewClient from '../components/client/new-client/show-new-client';
 
 function Clients() {
   useTitle('Clientes');
@@ -30,7 +31,7 @@ function Clients() {
 
             <div className="flex flex-row items-center gap-4">
               <SearchClient />
-              {/* <ShowFormNewClient /> */}
+              <ShowFormNewClient />
             </div>
           </div>
           <ClientsTable />
