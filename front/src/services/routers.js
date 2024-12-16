@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-const getSectorsNewClient = async () => {
+const getRoutersNewClient = async () => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const response = await fetch(apiUrl + '/api/sectors/new-client');
+  const response = await fetch(apiUrl + '/api/routers/new-client');
   if (!response.ok) {
     throw new Error('Error en la petición');
   }
@@ -10,10 +10,10 @@ const getSectorsNewClient = async () => {
   return await response.json();
 };
 
-export const useSectorsNewClient = () => {
+export const useRoutersNewClient = () => {
   return useQuery({
-    queryKey: ['sectors-new-client'],
-    queryFn: getSectorsNewClient,
+    queryKey: ['routers-new-client'],
+    queryFn: getRoutersNewClient,
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     refetchOnReconnect: true,

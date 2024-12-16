@@ -16,6 +16,10 @@ export class ServicesController {
   findAll(@Body() id: string) {
     return this.servicesService.findAll(id);
   }
+  @Get('new-client')
+  findOneByClient() {
+    return this.servicesService.findOneByNewClient();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

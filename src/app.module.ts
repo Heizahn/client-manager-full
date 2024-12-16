@@ -13,6 +13,8 @@ import { ServiceReceivable } from './entities/service_receivable.entity';
 import { Payment } from './entities/payment.entity';
 import { ServicesModule } from './services/services.module';
 import { ServiceReceivableModule } from './service_receivable/service_receivable.module';
+import { RoutersModule } from './routers/routers.module';
+import { SectorsModule } from './sectors/sectors.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { ServiceReceivableModule } from './service_receivable/service_receivable
     ClientsModule,
     ServicesModule,
     ServiceReceivableModule,
+    RoutersModule,
+    SectorsModule,
   ],
 })
 export class AppModule {}
