@@ -9,10 +9,10 @@ import ButtonSubmit from '../../button-submit';
 import { useServicesNewClient } from '../../../services/services';
 import { useSectorsNewClient } from '../../../services/sectors';
 import { useRoutersNewClient } from '../../../services/routers';
+import { useAuth } from '../../../context/auth-context';
 
 export default function NewClient({ setShow }) {
-  const [sectors, setSectors] = useState([]);
-  const [routers, setRouters] = useState([]);
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const clientQuery = useQueryClient();
@@ -20,18 +20,20 @@ export default function NewClient({ setShow }) {
     mutationFn: crateClient,
     onSuccess: () => {
       toast.success('Cliente creado exitosamente');
-      // clientQuery.invalidateQueries('clients');
+      clientQuery.invalidateQueries('clients');
       setLoading(false);
       setShow(false);
     },
     onError: (err) => {
       toast.error(err.message);
+      setLoading(false);
     },
   });
 
   const handlerSubmit = (values) => {
     setLoading(true);
     const data = {
+      created_by: user.id,
       nombre: values.nombre + ' ' + values.apellido,
       telefono: values.telefono,
       identificacion: values.identificacion,

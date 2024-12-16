@@ -19,7 +19,7 @@ function LayoutPrincipal({ children }) {
 export default LayoutPrincipal;
 
 function SideNav() {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   return (
     <div className="flex h-full flex-col px-3 py-4 md:px-2">
@@ -30,7 +30,7 @@ function SideNav() {
         <div className="flex flex-col justify-center">
           <h1 className="text-white font-bold text-2xl tex">Clientes LV</h1>
 
-          <span className="text-white text-lg">Humberto </span>
+          <span className="text-white text-lg">{user.nombre} </span>
         </div>
       </Link>
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">

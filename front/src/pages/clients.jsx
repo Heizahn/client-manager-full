@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useTitle from '../hooks/useTitle';
 import { useClients } from '../services/clients';
 import { ClientsProvider } from '../context/clients-context';

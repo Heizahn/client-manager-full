@@ -1,19 +1,24 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, parsePath } from 'react-router-dom';
 import { useAuth } from '../context/auth-context';
 import { useEffect } from 'react';
-import LayoutPrincipal from '../components/Layout/layout-principal';
+import { validateToken } from '../services/auth';
 
 function ProtectedRoute() {
-	const { isLogged } = useAuth();
-	const navigate = useNavigate();
+  const { isLogged, logout } = useAuth();
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token') || '';
+  const { pathname } = parsePath(window.location.pathname);
 
-	useEffect(() => {
-		if (!isLogged) {
-			navigate('/login');
-		}
-	}, [isLogged]);
+  useEffect(() => {
+    if (!token || !validateToken(token)) {
+      logout();
+    }
+    if (!isLogged) {
+      navigate('/login');
+    }
+  }, [isLogged, pathname]);
 
-	return <Outlet />;
+  return <Outlet />;
 }
 
 export default ProtectedRoute;

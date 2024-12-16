@@ -12,7 +12,7 @@ export class ClientsService {
   ) {}
 
   async create(createClientDto: CreateClientDto) {
-    const client = this.clientRepository.create(createClientDto);
+    const client = this.clientRepository.create({...createClientDto, created_at: new Date(), saldo: 0, estado: true});
     await this.clientRepository.save(client);
     return JSON.stringify({message: 'Cliente creado exitosamente'});  
   }

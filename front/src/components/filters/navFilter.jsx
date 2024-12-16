@@ -52,8 +52,8 @@ function NavFilter({ clients }) {
 
   useEffect(() => {
     handlerAll();
-  }, []);
-  
+  }, [clients.length]);
+
   return (
     <nav className="flex flex-row gap-6" aria-label="Filtro de Clientes">
       <FilterStatus
