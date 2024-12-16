@@ -4,12 +4,13 @@ import {
   Column,
   ManyToOne,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Profile } from './profile.entity';
 import { Client } from './client.entity';
 import { ServiceReceivable } from './service_receivable.entity';
 
-@Entity('payment')
+@Entity('payments')
 export class Payment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -35,11 +36,9 @@ export class Payment {
   @ManyToOne(() => Client, (client) => client.id)
   client: Client;
 
-  @ManyToMany(
-    () => ServiceReceivable,
-    (serviceReceivable) => serviceReceivable.id,
-  )
-  service_receivable: ServiceReceivable[];
+  @ManyToMany(() => ServiceReceivable, (serviceReceivable) => serviceReceivable.payment_id)
+  @JoinTable() // Aquí se define la tabla intermedia
+  service_receivable: Array<ServiceReceivable>;
 
   @ManyToOne(() => Profile, (profile) => profile.id)
   created_by: Profile;

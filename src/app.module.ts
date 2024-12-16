@@ -9,6 +9,8 @@ import { Router } from './entities/router.entity';
 import { Sector } from './entities/sector.entity';
 import { Service } from './entities/service.entity';
 import { Client } from './entities/client.entity';
+import { ServiceReceivable } from './entities/service_receivable.entity';
+import { Payment } from './entities/payment.entity';
 import { ServicesModule } from './services/services.module';
 import { ServiceReceivableModule } from './service_receivable/service_receivable.module';
 
@@ -24,11 +26,11 @@ import { ServiceReceivableModule } from './service_receivable/service_receivable
       username: process.env.SUPABASE_USER,
       password: process.env.SUPABASE_PASSWORD,
       database: process.env.SUPABASE_DB_NAME,
-      entities: [Client, Profile, Router, Sector, Service],
-      synchronize: true,
+      entities: [Client, Profile, Router, Sector, Service, ServiceReceivable, Payment],
+      synchronize: false,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'front/dist/'),
+      rootPath: join(__dirname, '..', 'front/dist'),
       exclude: ['/api/*'],
     }),
     ClientsModule,

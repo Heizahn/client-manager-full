@@ -39,5 +39,5 @@ export class ServiceReceivable {
   created_by: Profile;
 
   @ManyToMany(() => Payment, (payment) => payment.service_receivable)
-  payments: Payment[];
+  payment_id: Array<Payment>; // Manteniendo el nombre original
 }

@@ -16,12 +16,15 @@ export class ServiceReceivableService {
   }
 
   async findAll(id: string) {
-    return await this.serviceReceivableRepository.find({
-      relations: ['created_by, client, payments'],
-      where: {
-        client: { id },
-      },
-    });
+    console.log("id del cleinte desde el servicio", id)
+    try {
+
+      return await this.serviceReceivableRepository.find({
+        relations: ['created_by']
+      });
+    } catch (err){
+      console.log(err)
+    }
   }
 
   findOne(id: number) {

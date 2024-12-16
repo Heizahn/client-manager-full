@@ -22,7 +22,14 @@ const getClient = async (id) => {
 
 const getClientServices = async (id) => {
   const apiUrl = import.meta.env.VITE_API_URL;
-  const response = await fetch(apiUrl + '/api/services');
+  const response = await fetch(apiUrl + '/api/services', {
+    headers:{
+      "conten-type": "aplication-json"
+    },
+    body: {
+      id
+    }
+  });
   if (!response.ok) {
     throw new Error('Error en la petición');
   }
@@ -47,3 +54,13 @@ export const useClientById = (id) => {
     refetchOnReconnect: true,
   });
 };
+
+export const useClientServices = (id) => {
+  return useQuery({
+    queryKey: ['client-services'],
+    queryFn: () => getClientServices(id),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true
+  })
+}
