@@ -1,8 +1,7 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { InitialValues, schemaValidate } from './validate';
-import { crateClient } from '../../../services/clients';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import ButtonSubmit from '../../button-submit';
@@ -10,14 +9,16 @@ import { useServicesNewClient } from '../../../services/services';
 import { useSectorsNewClient } from '../../../services/sectors';
 import { useRoutersNewClient } from '../../../services/routers';
 import { useAuth } from '../../../context/auth-context';
+import { useFetchPost } from '../../../hooks/useFetch';
 
 export default function NewClient({ setShow }) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const clientQuery = useQueryClient();
+
   const mutation = useMutation({
-    mutationFn: crateClient,
+    mutationFn: (data) => useFetchPost('/api/clients', data),
     onSuccess: () => {
       toast.success('Cliente creado exitosamente');
       clientQuery.invalidateQueries('clients');

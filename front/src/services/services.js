@@ -1,21 +1,23 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-
-const getServiceByNewClient = async () => {
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const response = await fetch(apiUrl + '/api/services/new-client');
-    if (!response.ok) {
-      throw new Error('Error en la petición');
-    }
-  
-    return await response.json();
-  };
+import {  useQuery } from '@tanstack/react-query';
+import { useFetchGet } from '../hooks/useFetch';
 
 export const useServicesNewClient = () => {
     return useQuery({
       queryKey: ['services-new-client'],
-      queryFn: getServiceByNewClient,
+      queryFn: () => useFetchGet('/api/services/new-client'),
       refetchOnWindowFocus: true,
       refetchOnMount: true,
       refetchOnReconnect: true,
     });
 }
+
+export const useServices = () => {
+  return useQuery({
+    queryKey: ['services'],
+    queryFn: () => useFetchGet('/api/services'),
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+  });
+};
+

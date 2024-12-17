@@ -1,4 +1,4 @@
-import { useClientsContext } from '../../context/clients-context';
+import { useClientsContext } from '../../../context/clients-context';
 
 export default function SearchClient() {
   const { setFilter } = useClientsContext();

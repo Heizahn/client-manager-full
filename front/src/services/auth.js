@@ -18,11 +18,10 @@ export async function login (data) {
 
   const {id, nombre, session} = await response.json()
 
-  
 
   localStorage.setItem('token', JSON.stringify(session.access_token));
 
-  return user = {
+  return{
         id,
         nombre
     }

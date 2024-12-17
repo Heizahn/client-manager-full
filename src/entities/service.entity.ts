@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Profile } from './profile.entity';
+import { Client } from './client.entity';
 
 @Entity('services')
 export class Service {
@@ -15,8 +16,8 @@ export class Service {
   @Column({ type: 'text' })
   tipo: string;
 
-  @Column({ type: 'int2' })
-  clientes: number;
+  @ManyToOne(()=> Client, (client) => client.plan)
+  clients: Client[];
 
   @Column({ type: 'int2' })
   costo: number;

@@ -8,6 +8,7 @@ import Clients from './pages/clients';
 import LayoutPrincipal from './components/Layout/layout-principal';
 import NotFound from './pages/not-found';
 import ClientDetail from './pages/client-detail';
+import Services from './pages/services';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/client/:id" element={<ClientDetail />} />
+            <Route path="/services" element={<Services />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />

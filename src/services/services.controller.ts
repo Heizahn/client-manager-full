@@ -13,8 +13,8 @@ export class ServicesController {
   }
 
   @Get()
-  findAll(@Body() id: string) {
-    return this.servicesService.findAll(id);
+  findAll() {
+    return this.servicesService.findAll();
   }
   @Get('new-client')
   findOneByClient() {

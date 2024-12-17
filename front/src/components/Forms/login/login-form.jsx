@@ -21,13 +21,7 @@ function LoginForm() {
         setIsLogged(true);
         loginAuth(res);
         toast.success('Sesión iniciada correctamente');
-        localStorage.setItem(
-          'user',
-          JSON.stringify({
-            id: res.user.id,
-            nombre: res.user.nombre,
-          }),
-        );
+        localStorage.setItem('user', JSON.stringify(res));
         navigate('/');
       })
       .catch((err) => {

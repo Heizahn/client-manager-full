@@ -30,7 +30,8 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.SUPABASE_PASSWORD,
       database: process.env.SUPABASE_DB_NAME,
       entities: [Client, Profile, Router, Sector, Service, ServiceReceivable, Payment],
-      synchronize: false,
+      synchronize: true,
+      // dropSchema: true,
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'front/dist'),

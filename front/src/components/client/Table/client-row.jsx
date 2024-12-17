@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { formatMoney } from '../../hooks/format-money';
-import LinkGoogleMaps from '../../hooks/link-google-maps';
+import { formatMoney } from '../../../hooks/format-money';
+import LinkGoogleMaps from '../../../hooks/link-google-maps';
 
 export default function ClientRow({ client }) {
   const navigate = useNavigate();

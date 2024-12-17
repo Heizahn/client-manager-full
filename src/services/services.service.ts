@@ -11,13 +11,16 @@ export class ServicesService {
     @InjectRepository(Service)
     private readonly serviceRepository: Repository<Service>,
   ) {}
-  create(createServiceDto: CreateServiceDto) {
-    return 'This action adds a new service';
+
+  async create(createServiceDto: CreateServiceDto) {
+    const service = this.serviceRepository.create({...createServiceDto, costo: Math.round(createServiceDto.costo * 100), created_at: new Date(), estado: true});
+    await this.serviceRepository.save(service);
+    return JSON.stringify({message: 'Servicio creado exitosamente'});
   }
 
-  async findAll(id: string) {
+  async findAll() {
     return await this.serviceRepository.find({
-      relations: ['created_by'],
+      relations: ['created_by', 'clients'],
     });
   }
 

@@ -1,4 +1,4 @@
-import { useClientsContext } from '../../context/clients-context';
+import { useClientsContext } from '../../../context/clients-context';
 import ClientRow from './client-row';
 
 export default function ClientsTable() {

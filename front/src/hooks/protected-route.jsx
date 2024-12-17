@@ -4,16 +4,13 @@ import { useEffect } from 'react';
 import { validateToken } from '../services/auth';
 
 function ProtectedRoute() {
-  const { isLogged, logout } = useAuth();
+  const { isLogged } = useAuth();
   const navigate = useNavigate();
   const token = localStorage.getItem('token') || '';
   const { pathname } = parsePath(window.location.pathname);
 
   useEffect(() => {
-    if (!token || !validateToken(token)) {
-      logout();
-    }
-    if (!isLogged) {
+    if (!token || !validateToken(token) || !isLogged) {
       navigate('/login');
     }
   }, [isLogged, pathname]);

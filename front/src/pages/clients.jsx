@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
 import useTitle from '../hooks/useTitle';
 import { useClients } from '../services/clients';
 import { ClientsProvider } from '../context/clients-context';
-import SearchClient from '../components/Table/search-client';
+import SearchClient from '../components/client/Table/search-client';
 import NavFilter from '../components/filters/navFilter';
-import ClientsTable from '../components/Table/clients-table';
+import ClientsTable from '../components/client/Table/clients-table';
 import ShowFormNewClient from '../components/client/new-client/show-new-client';
 
 function Clients() {
