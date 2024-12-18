@@ -4,27 +4,27 @@ import { Client } from './client.entity';
 
 @Entity('services')
 export class Service {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-  @Column({ type: 'timestamptz' })
-  created_at: Date;
+	@Column({ type: 'timestamptz' })
+	created_at: Date;
 
-  @Column({ type: 'text' })
-  nombre_service: string;
+	@Column({ type: 'text' })
+	nombre_service: string;
 
-  @Column({ type: 'text' })
-  tipo: string;
+	@Column({ type: 'text' })
+	tipo: string;
 
-  @ManyToOne(()=> Client, (client) => client.plan)
-  clients: Client[];
+	@OneToMany(() => Client, (client) => client.plan)
+	clients: Client[];
 
-  @Column({ type: 'int2' })
-  costo: number;
+	@Column({ type: 'int2' })
+	costo: number;
 
-  @Column()
-  estado: boolean;
+	@Column()
+	estado: boolean;
 
-  @ManyToOne(() => Profile, (profile) => profile.id)
-  created_by: Profile;
+	@ManyToOne(() => Profile, (profile) => profile.id)
+	created_by: Profile;
 }

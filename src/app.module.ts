@@ -18,31 +18,31 @@ import { SectorsModule } from './sectors/sectors.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.SUPABASE_HOST,
-      port: Number(process.env.SUPABASE_PORT),
-      username: process.env.SUPABASE_USER,
-      password: process.env.SUPABASE_PASSWORD,
-      database: process.env.SUPABASE_DB_NAME,
-      entities: [Client, Profile, Router, Sector, Service, ServiceReceivable, Payment],
-      synchronize: true,
-      // dropSchema: true,
-    }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'front/dist'),
-      exclude: ['/api/*'],
-    }),
-    ClientsModule,
-    ServicesModule,
-    ServiceReceivableModule,
-    RoutersModule,
-    SectorsModule,
-    AuthModule,
-  ],
+	imports: [
+		ConfigModule.forRoot({
+			isGlobal: true,
+		}),
+		TypeOrmModule.forRoot({
+			type: 'postgres',
+			host: process.env.SUPABASE_HOST,
+			port: Number(process.env.SUPABASE_PORT),
+			username: process.env.SUPABASE_USER,
+			password: process.env.SUPABASE_PASSWORD,
+			database: process.env.SUPABASE_DB_NAME,
+			entities: [Client, Profile, Router, Sector, Service, ServiceReceivable, Payment],
+			synchronize: true,
+			// dropSchema: true,
+		}),
+		ServeStaticModule.forRoot({
+			rootPath: join(__dirname, '..', 'front/dist'),
+			exclude: ['/api/*'],
+		}),
+		ClientsModule,
+		ServicesModule,
+		ServiceReceivableModule,
+		RoutersModule,
+		SectorsModule,
+		AuthModule,
+	],
 })
 export class AppModule {}

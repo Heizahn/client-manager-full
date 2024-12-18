@@ -1,30 +1,31 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Sector } from './sector.entity';
 import { Profile } from './profile.entity';
+import { Client } from './client.entity';
 
 @Entity('routers')
 export class Router {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-  @Column({ type: 'timestamptz' })
-  created_at: Date;
+	@Column({ type: 'timestamptz' })
+	created_at: Date;
 
-  @Column({ type: 'text' })
-  nombre: string;
+	@Column({ type: 'text' })
+	nombre: string;
 
-  @Column({ type: 'text' })
-  ip: string;
+	@Column({ type: 'text' })
+	ip: string;
 
-  @Column()
-  estado: boolean;
+	@Column()
+	estado: boolean;
 
-  @Column({ type: 'int2' })
-  clientes: number;
+	@OneToMany(() => Client, (client) => client.plan)
+	clients: Client[];
 
-  @ManyToOne(() => Profile, (profile) => profile.id)
-  created_by: Profile;
+	@ManyToOne(() => Profile, (profile) => profile.id)
+	created_by: Profile;
 
-  @ManyToOne(() => Sector, (sector) => sector.id)
-  sector_id: Sector;
+	@ManyToOne(() => Sector, (sector) => sector.id)
+	sector_id: Sector;
 }

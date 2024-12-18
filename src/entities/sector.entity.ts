@@ -1,23 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Profile } from './profile.entity';
+import { Client } from './client.entity';
 
 @Entity('sectors')
 export class Sector {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
-  @Column({ type: 'timestamptz' })
-  created_at: Date;
+	@Column({ type: 'timestamptz' })
+	created_at: Date;
 
-  @Column({ type: 'text' })
-  nombre_sector: string;
+	@Column({ type: 'text' })
+	nombre_sector: string;
 
-  @Column({ type: 'int2' })
-  clientes: number;
+	@OneToMany(() => Client, (client) => client.plan)
+	clients: Client[];
 
-  @Column()
-  estado: boolean;
+	@Column()
+	estado: boolean;
 
-  @ManyToOne(() => Profile, (profile) => profile.id)
-  created_by: Profile;
+	@ManyToOne(() => Profile, (profile) => profile.id)
+	created_by: Profile;
 }

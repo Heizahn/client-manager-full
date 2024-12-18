@@ -1,21 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
+import { useFetchGet } from '../hooks/useFetch';
 
-const getSectorsNewClient = async () => {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const response = await fetch(apiUrl + '/api/sectors/new-client');
-  if (!response.ok) {
-    throw new Error('Error en la petición');
-  }
-
-  return await response.json();
+export const useSectors = () => {
+	return useQuery({
+		queryKey: ['sectors'],
+		queryFn: () => useFetchGet('/api/sectors'),
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
+		refetchOnReconnect: true,
+	});
 };
 
 export const useSectorsNewClient = () => {
-  return useQuery({
-    queryKey: ['sectors-new-client'],
-    queryFn: getSectorsNewClient,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-  });
+	return useQuery({
+		queryKey: ['sectors-new-client'],
+		queryFn: () => useFetchGet('/api/sectors/new-client'),
+		refetchOnWindowFocus: true,
+		refetchOnMount: true,
+		refetchOnReconnect: true,
+	});
 };

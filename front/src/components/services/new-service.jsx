@@ -5,8 +5,10 @@ import { useState } from 'react';
 import ButtonSubmit from '../button-submit';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useFetchPost } from '../../hooks/useFetch';
+import { useAuth } from '../../context/auth-context';
 
 export default function NewService({ setShow }) {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const clientQuery = useQueryClient();
 
@@ -32,6 +34,7 @@ export default function NewService({ setShow }) {
       nombre_service: values.nombre,
       tipo: values.tipo,
       costo: values.costo,
+      created_by: user.id,
     });
   };
 
