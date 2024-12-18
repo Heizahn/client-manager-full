@@ -1,21 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
-
-const getRoutersNewClient = async () => {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const response = await fetch(apiUrl + '/api/routers/new-client');
-  if (!response.ok) {
-    throw new Error('Error en la petición');
-  }
-
-  return await response.json();
-};
+import { useFetchGet } from '../hooks/useFetch';
 
 export const useRoutersNewClient = () => {
-  return useQuery({
-    queryKey: ['routers-new-client'],
-    queryFn: getRoutersNewClient,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
-  });
+	return useQuery({
+		queryKey: ['routers-new-client'],
+		queryFn: () => useFetchGet('/api/routers/new-client'),
+		refetchOnWindowFocus: true,
+		refetchOnMount: true,
+		refetchOnReconnect: true,
+	});
+};
+
+export const useRouters = () => {
+	return useQuery({
+		queryKey: ['routers'],
+		queryFn: () => useFetchGet('/api/routers'),
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
+		refetchOnReconnect: true,
+	});
 };

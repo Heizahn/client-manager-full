@@ -2,31 +2,42 @@ import { schemaRouter } from './schema-validate';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../context/auth-context';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSectorsNewClient } from '../../services/sectors';
+import { useFetchPost } from '../../hooks/useFetch';
 import ButtonSubmit from '../button-submit';
 
 export default function NewRouter({ setShow }) {
-	const [sectors, setSectors] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [sectorsLoading, setSectorsLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
+	const {
+		user: { id: userId },
+	} = useAuth();
+	const { data: sectors, isLoading: sectorsLoading } = useSectorsNewClient();
+	const clientQuery = useQueryClient();
+
+	const mutation = useMutation({
+		mutationFn: async (data) => useFetchPost(`/api/routers`, data),
+		onSuccess: () => {
+			toast.success('Router creado exitosamente');
+			clientQuery.invalidateQueries('routers');
+			setShow(false);
+			setLoading(false);
+		},
+		onError: (error) => {
+			toast.error(error.message);
+			setLoading(false);
+		},
+	});
 
 	const handlerSubmit = (values) => {
 		setLoading(true);
-		fetchCreateRouter({
-			...values,
+		mutation.mutate({
+			nombre: values.nombre,
 			ip: `${values.part1}.${values.part2}.${values.part3}.${values.part4}`,
-		})
-			.then((res) => {
-				if (typeof res === 'string') {
-					toast.success(res);
-					setShow(false);
-				}
-			})
-			.catch((err) => {
-				toast.error(err.message);
-			})
-			.finally(() => {
-				setLoading(false);
-			});
+			sector_id: values.sector,
+			created_by: userId,
+		});
 	};
 
 	return (

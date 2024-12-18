@@ -22,6 +22,7 @@ export default function NewClient({ setShow }) {
 		onSuccess: () => {
 			toast.success('Cliente creado exitosamente');
 			clientQuery.invalidateQueries('clients');
+			clientQuery.refetchQueries(['routers', 'services', 'sectors']);
 			setLoading(false);
 			setShow(false);
 		},

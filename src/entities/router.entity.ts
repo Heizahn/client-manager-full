@@ -23,9 +23,9 @@ export class Router {
 	@OneToMany(() => Client, (client) => client.router)
 	clients: Client[];
 
-	@ManyToOne(() => Profile, (profile) => profile.id)
+	@ManyToOne(() => Profile, (profile) => profile.routers)
 	created_by: Profile;
 
-	@ManyToOne(() => Sector, (sector) => sector.id)
+	@ManyToOne(() => Sector, (sector) => sector.routers)
 	sector_id: Sector;
 }

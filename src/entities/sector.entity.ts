@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Profile } from './profile.entity';
 import { Client } from './client.entity';
+import { Router } from './router.entity';
 
 @Entity('sectors')
 export class Sector {
@@ -21,4 +22,7 @@ export class Sector {
 
 	@ManyToOne(() => Profile, (profile) => profile.sectors)
 	created_by: Profile;
+
+	@OneToMany(() => Router, (router) => router.sector_id)
+	routers: Router[];
 }
