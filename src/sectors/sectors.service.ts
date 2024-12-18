@@ -4,37 +4,55 @@ import { UpdateSectorDto } from './dto/update-sector.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Sector } from 'src/entities/sector.entity';
+import { Profile } from 'src/entities/profile.entity';
 
 @Injectable()
 export class SectorsService {
-  constructor(
-    @InjectRepository(Sector)
-    private readonly sectorRepository: Repository<Sector>,
-  ) {}
-  create(createSectorDto: CreateSectorDto) {
-    return 'This action adds a new sector';
-  }
+	constructor(
+		@InjectRepository(Sector)
+		private readonly sectorRepository: Repository<Sector>,
+		@InjectRepository(Profile)
+		private readonly profileRepository: Repository<Profile>,
+	) {}
 
-  findAll() {
-    return `This action returns all sectors`;
-  }
+	async create(createSectorDto: CreateSectorDto) {
+		const profile = await this.profileRepository.findOne({
+			where: {
+				id: createSectorDto.created_by.id,
+			},
+		});
 
-  async findCreateClient(){
-    return await this.sectorRepository.query(
-      `SELECT id, nombre_sector
-      FROM sectors`
-    )
-  }
+		const sector = this.sectorRepository.create({
+			nombre_sector: createSectorDto.nombre_sector,
+			created_at: new Date(),
+			created_by: profile,
+			estado: true,
+		});
+		return await this.sectorRepository.save(sector);
+	}
 
-  findOne(id: number) {
-    return `This action returns a #${id} sector`;
-  }
+	findAll() {
+		return this.sectorRepository.find({
+			relations: ['created_by', 'clients'],
+		});
+	}
 
-  update(id: number, updateSectorDto: UpdateSectorDto) {
-    return `This action updates a #${id} sector`;
-  }
+	async findCreateClient() {
+		return await this.sectorRepository.query(
+			`SELECT id, nombre_sector
+      FROM sectors`,
+		);
+	}
 
-  remove(id: number) {
-    return `This action removes a #${id} sector`;
-  }
+	findOne(id: number) {
+		return `This action returns a #${id} sector`;
+	}
+
+	update(id: number, updateSectorDto: UpdateSectorDto) {
+		return `This action updates a #${id} sector`;
+	}
+
+	remove(id: number) {
+		return `This action removes a #${id} sector`;
+	}
 }

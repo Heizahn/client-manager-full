@@ -36,10 +36,10 @@ export class Client {
 	@Column()
 	estado: boolean;
 
-	@ManyToOne(() => Router, (router) => router.id)
+	@ManyToOne(() => Router, (router) => router.clients)
 	router: Router;
 
-	@ManyToOne(() => Sector, (sector) => sector.id)
+	@ManyToOne(() => Sector, (sector) => sector.clients)
 	sector: Sector;
 
 	@ManyToOne(() => Service, (service) => service.clients)

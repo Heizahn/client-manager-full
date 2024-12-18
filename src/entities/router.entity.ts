@@ -20,7 +20,7 @@ export class Router {
 	@Column()
 	estado: boolean;
 
-	@OneToMany(() => Client, (client) => client.plan)
+	@OneToMany(() => Client, (client) => client.router)
 	clients: Client[];
 
 	@ManyToOne(() => Profile, (profile) => profile.id)

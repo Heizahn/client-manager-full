@@ -13,12 +13,12 @@ export class Sector {
 	@Column({ type: 'text' })
 	nombre_sector: string;
 
-	@OneToMany(() => Client, (client) => client.plan)
+	@OneToMany(() => Client, (client) => client.sector)
 	clients: Client[];
 
 	@Column()
 	estado: boolean;
 
-	@ManyToOne(() => Profile, (profile) => profile.id)
+	@ManyToOne(() => Profile, (profile) => profile.sectors)
 	created_by: Profile;
 }

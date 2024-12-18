@@ -4,10 +4,13 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import ButtonSubmit from '../button-submit';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useFetchPost } from '../../hooks/useFetch';
+import { useAuth } from '../../context/auth-context';
 
 export default function NewSector({ setShow }) {
 	const [loading, setLoading] = useState(false);
 	const clientQuery = useQueryClient();
+	const { user } = useAuth();
 
 	const mutation = useMutation({
 		mutationFn: (data) => useFetchPost('/api/sectors', data),
@@ -25,7 +28,10 @@ export default function NewSector({ setShow }) {
 
 	const handleSubmit = (value) => {
 		setLoading(true);
-		mutation.mutate(value);
+		mutation.mutate({
+			...value,
+			created_by: user,
+		});
 	};
 
 	return (
@@ -46,16 +52,16 @@ export default function NewSector({ setShow }) {
 					</div>
 					<h3 className='text-2xl font-bold text-center mb-3'>Nuevo Sector</h3>
 					<div className='flex flex-col gap-1 mb-3'>
-						<label htmlFor='nombre'>
+						<label htmlFor='nombre_sector'>
 							Nombre:{' '}
 							<span className='text-red-500'>
-								<ErrorMessage name='nombre' />
+								<ErrorMessage name='nombre_sector' />
 							</span>
 						</label>
 						<Field
 							type='text'
-							name='nombre'
-							id='nombre'
+							name='nombre_sector'
+							id='nombre_sector'
 							placeholder='Nombre'
 							className='w-full rounded-md px-2 py-1 outline-2 outline-gray-600 text-gray-950'
 						/>

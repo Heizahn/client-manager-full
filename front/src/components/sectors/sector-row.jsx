@@ -13,7 +13,8 @@ export default function RouterRow({ sector }) {
 			>
 				<td className='text-left py-1 pl-4'>{sector.nombre_sector}</td>
 				<td>{formatDate(new Date(sector.created_at))}</td>
-				<td>{sector.clientes}</td>
+				<td>{sector.created_by?.nombre}</td>
+				<td>{sector.clients.length}</td>
 				<td className={`${!sector.estado ? 'text-red-500' : 'text-green-500'}`}>
 					{sector.estado ? 'Activo' : 'Inactivo'}
 				</td>
