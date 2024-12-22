@@ -3,8 +3,9 @@ import Breadcrumbs from '../Breadcrumbs';
 import NavCliente from './nav-client';
 import { useClientDetail } from '../../context/client-detail-context';
 import LinkGoogleMaps from '../../hooks/link-google-maps';
+import ActionClient from './action-client';
 
-export default function ClientHeader({ client, id }) {
+export default function ClientHeader({ client, id, routerIp }) {
 	const {
 		view: { details, edit },
 		setView,
@@ -113,9 +114,15 @@ export default function ClientHeader({ client, id }) {
 								</button>
 							</>
 						)}
-						<button className='hover:underline hover:underline-offset-4'>
-							Suspender
-						</button>
+						{!client.estado ? (
+							<ActionClient id={id} action={'reactivate'} router={routerIp}>
+								Activar
+							</ActionClient>
+						) : (
+							<ActionClient id={id} action={'suspend'} router={routerIp}>
+								Suspender
+							</ActionClient>
+						)}
 					</div>
 				</div>
 				<NavCliente />

@@ -19,7 +19,6 @@ export class RoutersService {
 	) {}
 
 	async create(createRouterDto: CreateRouterDto) {
-		console.log(createRouterDto);
 		const profile = await this.profileRepository.findOne({
 			where: { id: createRouterDto.created_by.id },
 		});

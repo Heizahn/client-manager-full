@@ -4,6 +4,7 @@ import { Client } from '../entities/client.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { reactivateMK, suspendMK } from './mikrotik.connect';
 
 @Injectable()
 export class ClientsService {
@@ -63,7 +64,43 @@ export class ClientsService {
 		return JSON.stringify({ message: 'Cliente actualizado exitosamente' });
 	}
 
-	remove(id: number) {
-		return `This action removes a #${id} client`;
+	async suspend(id: string, ip: string) {
+		try {
+			const res = await this.clientRepository.query(
+				`SELECT nombre, ipv4 FROM clients WHERE id='${id}'`,
+			);
+
+			await suspendMK({
+				clientIp: res[0].ipv4,
+				clientUser: res[0].nombre,
+				routerIp: ip,
+			});
+
+			await this.clientRepository.update(id, { estado: false });
+
+			return JSON.stringify({ message: 'Cliente suspendido exitosamente' });
+		} catch (error) {
+			throw new Error(error);
+		}
+	}
+
+	async reactivate(id: string, ip: string) {
+		try {
+			const res = await this.clientRepository.query(
+				`SELECT nombre, ipv4 FROM clients WHERE id='${id}'`,
+			);
+
+			await reactivateMK({
+				clientIp: res[0].ipv4,
+				clientUser: res[0].nombre,
+				routerIp: ip,
+			});
+
+			await this.clientRepository.update(id, { estado: true });
+
+			return JSON.stringify({ message: 'Cliente reactivado exitosamente' });
+		} catch (error) {
+			throw new Error(error);
+		}
 	}
 }

@@ -38,3 +38,19 @@ export async function useFetchPatch(endpoint, data) {
 
 	return await response.json();
 }
+
+export async function useFetchPut(endpoint, data) {
+	const response = await fetch(import.meta.env.VITE_API_URL + endpoint, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
+	});
+
+	if (!response.ok) {
+		throw new Error('Error en la petición');
+	}
+
+	return await response.json();
+}
