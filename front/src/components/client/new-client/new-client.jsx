@@ -10,6 +10,7 @@ import { useSectorsNewClient } from '../../../services/sectors';
 import { useRoutersNewClient } from '../../../services/routers';
 import { useAuth } from '../../../context/auth-context';
 import { useFetchPost } from '../../../hooks/useFetch';
+import { identificationToInitials, nameToInitials } from './functions';
 
 export default function NewClient({ setShow }) {
 	const { user } = useAuth();
@@ -97,13 +98,7 @@ export default function NewClient({ setShow }) {
 								id='nombre'
 								placeholder='Juan'
 								className='w-full rounded-md px-2 py-1 outline-2 outline-gray-600 text-gray-950'
-								onInput={(e) =>
-									e.target.value
-										? (e.target.value =
-												e.target.value.toLowerCase()[0].toUpperCase() +
-												e.target.value.slice(1))
-										: e.target.value
-								}
+								onInput={nameToInitials}
 							/>
 						</div>
 						<div className='w-full flex flex-col gap-1'>
@@ -119,13 +114,7 @@ export default function NewClient({ setShow }) {
 								id='apellido'
 								placeholder='Perez'
 								className='w-full rounded-md px-2 py-1 outline-2 outline-gray-600 text-gray-950'
-								onInput={(e) =>
-									e.target.value
-										? (e.target.value =
-												e.target.value.toLowerCase()[0].toUpperCase() +
-												e.target.value.slice(1))
-										: e.target.value
-								}
+								onInput={nameToInitials}
 							/>
 						</div>
 					</div>
@@ -143,13 +132,7 @@ export default function NewClient({ setShow }) {
 								id='identificacion'
 								placeholder='V-12345678'
 								className='w-full rounded-md px-2 py-1 outline-2 outline-gray-600 text-gray-950'
-								onInput={(e) =>
-									e.target.value
-										? (e.target.value =
-												e.target.value.toLowerCase()[0].toUpperCase() +
-												e.target.value.slice(1))
-										: e.target.value
-								}
+								onInput={identificationToInitials}
 							/>
 						</div>
 						<div className='w-3/5 flex flex-col gap-1'>

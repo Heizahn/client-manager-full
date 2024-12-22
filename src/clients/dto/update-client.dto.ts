@@ -1,4 +1,5 @@
-
 import { CreateClientDto } from './create-client.dto';
 
-export type UpdateClientDto = Partial<CreateClientDto> 
+export type UpdateClientDto = Partial<CreateClientDto> & {
+	id: string;
+};
