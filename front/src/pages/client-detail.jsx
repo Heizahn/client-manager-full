@@ -27,7 +27,12 @@ export default function ClientDetail() {
 					routerIp={client.router.ip}
 				/>
 				<DetailClient client={client} />
-				<ServiceReceivableTable servicesReceivables={client.service_receivable} />
+				<ServiceReceivableTable
+					servicesReceivables={client.service_receivable.sort(
+						(a, b) => new Date(b.created_at) - new Date(a.created_at),
+					)}
+					clientId={id}
+				/>
 			</ClientDetailProvider>
 		</main>
 	);

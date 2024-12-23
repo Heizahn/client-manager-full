@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Sector } from './sector.entity';
 import { Router } from './router.entity';
+import { ServiceReceivable } from './service_receivable.entity';
 
 @Entity('profiles')
 export class Profile {
@@ -15,4 +16,7 @@ export class Profile {
 
 	@OneToMany(() => Router, (router) => router.created_by)
 	routers: Router[];
+
+	@OneToMany(() => ServiceReceivable, (serviceReceivable) => serviceReceivable.created_by)
+	service_receivable: ServiceReceivable[];
 }

@@ -1,15 +1,20 @@
 import PropTypes from 'prop-types';
 import ServiceReceivableRow from './service-receivable-row';
 import { useClientDetail } from '../../../context/useClientDetail';
+import { useAuth } from '../../../context/useAuth';
 import { useEffect, useState, useCallback } from 'react';
+import NewServiceReceivable from '../../Forms/service-receivable/new-service-receivable';
 
 ServiceReceivableTable.propTypes = {
 	servicesReceivables: PropTypes.array.isRequired,
+	clientId: PropTypes.string.isRequired,
 };
 
-export default function ServiceReceivableTable({ servicesReceivables }) {
+export default function ServiceReceivableTable({ servicesReceivables, clientId }) {
 	const { active } = useClientDetail();
+	const { user } = useAuth();
 	const [search, setSearch] = useState('');
+	const [show, setShow] = useState(false);
 	const handleSearch = (e) => {
 		setSearch(e.target.value);
 	};
@@ -19,7 +24,7 @@ export default function ServiceReceivableTable({ servicesReceivables }) {
 			return servicesReceivables;
 		}
 		return servicesReceivables.filter((serviceReceivable) =>
-			serviceReceivable.motivo.includes(search),
+			serviceReceivable.motivo.toLowerCase().includes(search.toLowerCase()),
 		);
 	}, [search, servicesReceivables]);
 
@@ -38,9 +43,21 @@ export default function ServiceReceivableTable({ servicesReceivables }) {
 							className='px-4 py-1 rounded-md text-black'
 							onInput={handleSearch}
 						/>
-						<button className='bg-blue-600 text-white px-4 py-1 rounded-md'>
-							Agregar
-						</button>
+						<>
+							<button
+								className='bg-blue-600 text-white px-4 py-1 rounded-md'
+								onClick={() => setShow(true)}
+							>
+								Agregar
+							</button>
+							{show && (
+								<NewServiceReceivable
+									clientId={clientId}
+									setShow={setShow}
+									userId={user.id}
+								/>
+							)}
+						</>
 					</div>
 				</div>
 				<table className='w-full'>

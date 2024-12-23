@@ -12,9 +12,6 @@ export class ServiceReceivable {
 	created_at: Date;
 
 	@Column({ type: 'text' })
-	nombre: string;
-
-	@Column({ type: 'text' })
 	motivo: string;
 
 	@Column({ type: 'int2' })
@@ -26,10 +23,10 @@ export class ServiceReceivable {
 	@Column()
 	estado: boolean;
 
-	@ManyToOne(() => Client, (client) => client.id)
+	@ManyToOne(() => Client, (client) => client.service_receivable)
 	client: Client;
 
-	@ManyToOne(() => Profile, (profile) => profile.id)
+	@ManyToOne(() => Profile, (profile) => profile.service_receivable)
 	created_by: Profile;
 
 	@ManyToMany(() => Payment, (payment) => payment.service_receivable)
