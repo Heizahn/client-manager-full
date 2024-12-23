@@ -1,37 +1,44 @@
 import { Injectable } from '@nestjs/common';
 import { CreateServiceReceivableDto } from './dto/create-service_receivable.dto';
-import { UpdateServiceReceivableDto } from './dto/update-service_receivable.dto';
+// import { UpdateServiceReceivableDto } from './dto/update-service_receivable.dto';
 import { Repository } from 'typeorm';
 import { ServiceReceivable } from '../entities/service_receivable.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ServiceReceivableService {
-  constructor(
-    @InjectRepository(ServiceReceivable)
-    private readonly serviceReceivableRepository: Repository<ServiceReceivable>,
-  ) {}
-  create(createServiceReceivableDto: CreateServiceReceivableDto) {
-    return 'This action adds a new serviceReceivable';
-  }
+	constructor(
+		@InjectRepository(ServiceReceivable)
+		private readonly serviceReceivableRepository: Repository<ServiceReceivable>,
+	) {}
+	async create(clientId: string, createServiceReceivableDto: CreateServiceReceivableDto) {
+		const serviceReceivable = this.serviceReceivableRepository.create({
+			...createServiceReceivableDto,
+			created_at: new Date(),
+			estado: true,
+			client: {
+				id: clientId,
+			},
+		});
+		return this.serviceReceivableRepository.save(serviceReceivable);
+	}
 
-  async findAll(id: string) {
-    console.log("id del cleinte desde el servicio", id)
-    try {
+	async findAll(id: string) {
+		try {
+			return await this.serviceReceivableRepository.find({
+				relations: ['created_by'],
+				where: {
+					client: {
+						id: id,
+					},
+				},
+			});
+		} catch (err) {
+			throw new Error(err.message);
+		}
+	}
 
-      return await this.serviceReceivableRepository.find({
-        relations: ['created_by']
-      });
-    } catch (err){
-      console.log(err)
-    }
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} serviceReceivable`;
-  }
-
-  update(id: number, updateServiceReceivableDto: UpdateServiceReceivableDto) {
-    return `This action updates a #${id} serviceReceivable`;
-  }
+	findOne(id: number) {
+		return `This action returns a #${id} serviceReceivable`;
+	}
 }

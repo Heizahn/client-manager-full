@@ -1,39 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { RoutersService } from './routers.service';
 import { CreateRouterDto } from './dto/create-router.dto';
-import { UpdateRouterDto } from './dto/update-router.dto';
 
 @Controller('routers')
 export class RoutersController {
-  constructor(private readonly routersService: RoutersService) {}
+	constructor(private readonly routersService: RoutersService) {}
 
-  @Post()
-  create(@Body() createRouterDto: CreateRouterDto) {
-    return this.routersService.create(createRouterDto);
-  }
+	@Post()
+	create(@Body() createRouterDto: CreateRouterDto) {
+		return this.routersService.create(createRouterDto);
+	}
 
-  @Get()
-  findAll() {
-    return this.routersService.findAll();
-  }
+	@Get()
+	findAll() {
+		return this.routersService.findAll();
+	}
 
-  @Get('new-client')
-  findCreateClient(){
-    return this.routersService.findCreateClient()
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.routersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRouterDto: UpdateRouterDto) {
-    return this.routersService.update(+id, updateRouterDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.routersService.remove(+id);
-  }
+	@Get('new-client')
+	findCreateClient() {
+		return this.routersService.findCreateClient();
+	}
 }
