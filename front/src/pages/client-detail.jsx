@@ -4,6 +4,7 @@ import DetailClient from '../components/client/detail-client';
 import { useParams } from 'react-router-dom';
 import { useClientById } from '../services/clients';
 import ServiceReceivableTable from '../components/client/service-receivable/services-receivable-table';
+import PaymentsTable from '../components/client/payments/payments-table';
 
 export default function ClientDetail() {
 	const { id } = useParams();
@@ -13,6 +14,7 @@ export default function ClientDetail() {
 	if (error) return <div>Error: {error.message}</div>;
 
 	document.title = client.nombre;
+
 	return (
 		<main className='flex flex-col md:overflow-hidden'>
 			<ClientDetailProvider>
@@ -32,6 +34,11 @@ export default function ClientDetail() {
 						(a, b) => new Date(b.created_at) - new Date(a.created_at),
 					)}
 					clientId={id}
+				/>
+				<PaymentsTable
+					paymentClient={client.payments.sort(
+						(a, b) => new Date(b.created_at) - new Date(a.created_at),
+					)}
 				/>
 			</ClientDetailProvider>
 		</main>

@@ -55,7 +55,14 @@ export class ClientsService {
 			where: {
 				id,
 			},
-			relations: ['sector', 'plan', 'router', 'created_by', 'service_receivable'],
+			relations: [
+				'sector',
+				'plan',
+				'router',
+				'created_by',
+				'service_receivable',
+				'payments',
+			],
 		});
 	}
 
@@ -102,5 +109,19 @@ export class ClientsService {
 		} catch (error) {
 			throw new Error(error);
 		}
+	}
+
+	async updateSaldo(id: string) {
+		const resDebt = await this.clientRepository.query(
+			`SELECT SUM(deuda) FROM service_receivable WHERE "clientId"='${id}' AND estado=true;`,
+		);
+		const debt = Number(resDebt[0].sum ? resDebt[0].sum : 0);
+
+		const resCredit = await this.clientRepository.query(
+			`SELECT SUM(saldo) FROM payments WHERE "clientId"='${id}' AND estado=true;`,
+		);
+		const credit = Number(resCredit[0].sum ? resCredit[0].sum : 0);
+
+		await this.clientRepository.update(id, { saldo: debt + credit });
 	}
 }

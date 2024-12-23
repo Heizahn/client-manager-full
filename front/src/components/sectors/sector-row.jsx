@@ -1,6 +1,11 @@
 import { formatDate } from '../../hooks/format-date';
+import PropTypes from 'prop-types';
 
-export default function RouterRow({ sector }) {
+SectorRow.propTypes = {
+	sector: PropTypes.object.isRequired,
+};
+
+export default function SectorRow({ sector }) {
 	const handlerClick = (id) => {
 		alert(id);
 	};

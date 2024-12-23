@@ -4,6 +4,7 @@ import { Sector } from './sector.entity';
 import { Service } from './service.entity';
 import { Profile } from './profile.entity';
 import { ServiceReceivable } from './service_receivable.entity';
+import { Payment } from './payment.entity';
 
 @Entity('clients')
 export class Client {
@@ -28,7 +29,7 @@ export class Client {
 	@Column({ type: 'text' })
 	telefono: string;
 
-	@Column({ type: 'int2' })
+	@Column({ type: 'numeric' })
 	saldo: number;
 
 	@Column({ type: 'int2' })
@@ -46,9 +47,12 @@ export class Client {
 	@ManyToOne(() => Service, (service) => service.clients)
 	plan: Service;
 
-	@ManyToOne(() => Profile, (profile) => profile.id)
+	@ManyToOne(() => Profile, (profile) => profile.clients)
 	created_by: Profile;
 
 	@OneToMany(() => ServiceReceivable, (serviceReceivable) => serviceReceivable.client)
 	service_receivable: ServiceReceivable[];
+
+	@OneToMany(() => Payment, (payment) => payment.client)
+	payments: Payment[];
 }

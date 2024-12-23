@@ -25,6 +25,6 @@ export class Service {
 	@Column()
 	estado: boolean;
 
-	@ManyToOne(() => Profile, (profile) => profile.id)
+	@ManyToOne(() => Profile, (profile) => profile.services)
 	created_by: Profile;
 }

@@ -6,7 +6,7 @@ import ServiceReceivableDetail from './service-receivable-details';
 
 ServiceReceivableRow.propTypes = {
 	serviceReceivable: PropTypes.shape({
-		id: PropTypes.number.isRequired,
+		id: PropTypes.string.isRequired,
 		created_at: PropTypes.string.isRequired,
 		monto: PropTypes.number.isRequired,
 		deuda: PropTypes.number.isRequired,

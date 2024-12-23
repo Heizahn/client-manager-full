@@ -6,6 +6,7 @@ import { ServiceReceivable } from '../entities/service_receivable.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from 'src/entities/client.entity';
 import { Profile } from 'src/entities/profile.entity';
+import { ClientsService } from 'src/clients/clients.service';
 
 @Injectable()
 export class ServiceReceivableService {
@@ -16,6 +17,7 @@ export class ServiceReceivableService {
 		private readonly clientRepository: Repository<Client>,
 		@InjectRepository(Profile)
 		private readonly profileRepository: Repository<Profile>,
+		private readonly clientsService: ClientsService,
 	) {}
 	async create(clientId: string, createServiceReceivableDto: CreateServiceReceivableDto) {
 		const client = await this.clientRepository.findOne({
@@ -39,12 +41,11 @@ export class ServiceReceivableService {
 			estado: true,
 			client: client,
 		});
+		await this.serviceReceivableRepository.save(serviceReceivable);
 
-		await this.clientRepository.update(client.id, {
-			saldo: client.saldo + -monto,
-		});
+		await this.clientsService.updateSaldo(clientId);
 
-		return this.serviceReceivableRepository.save(serviceReceivable);
+		return JSON.stringify({ message: 'Deuda creada exitosamente' });
 	}
 
 	async findAll(id: string) {
