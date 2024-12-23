@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Router } from './router.entity';
 import { Sector } from './sector.entity';
 import { Service } from './service.entity';
 import { Profile } from './profile.entity';
+import { ServiceReceivable } from './service_receivable.entity';
 
 @Entity('clients')
 export class Client {
@@ -47,4 +48,7 @@ export class Client {
 
 	@ManyToOne(() => Profile, (profile) => profile.id)
 	created_by: Profile;
+
+	@OneToMany(() => ServiceReceivable, (serviceReceivable) => serviceReceivable.client)
+	service_receivable: ServiceReceivable[];
 }

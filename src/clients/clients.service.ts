@@ -55,7 +55,7 @@ export class ClientsService {
 			where: {
 				id,
 			},
-			relations: ['sector', 'plan', 'router', 'created_by'],
+			relations: ['sector', 'plan', 'router', 'created_by', 'service_receivable'],
 		});
 	}
 

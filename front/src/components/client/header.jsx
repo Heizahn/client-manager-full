@@ -96,7 +96,7 @@ export default function ClientHeader({ client, id, routerIp }) {
 							</>
 						)}
 
-						{active === 'details' && (
+						{active !== 'edit' && (
 							<>
 								{!client.estado ? (
 									<ActionClient

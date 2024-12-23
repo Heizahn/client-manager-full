@@ -3,6 +3,7 @@ import ClientHeader from '../components/client/header';
 import DetailClient from '../components/client/detail-client';
 import { useParams } from 'react-router-dom';
 import { useClientById } from '../services/clients';
+import ServiceReceivableTable from '../components/client/service-receivable/services-receivable-table';
 
 export default function ClientDetail() {
 	const { id } = useParams();
@@ -26,6 +27,7 @@ export default function ClientDetail() {
 					routerIp={client.router.ip}
 				/>
 				<DetailClient client={client} />
+				<ServiceReceivableTable servicesReceivables={client.service_receivable} />
 			</ClientDetailProvider>
 		</main>
 	);
