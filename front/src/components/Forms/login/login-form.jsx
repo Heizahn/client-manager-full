@@ -33,7 +33,7 @@ function LoginForm() {
 		if (isLogged) {
 			navigate('/');
 		}
-	}, [isLogged]);
+	}, [isLogged, navigate]);
 
 	return (
 		<Formik

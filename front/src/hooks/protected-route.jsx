@@ -13,7 +13,7 @@ function ProtectedRoute() {
 		if (!token || !validateToken(token) || !isLogged) {
 			navigate('/login');
 		}
-	}, [isLogged, pathname]);
+	}, [isLogged, pathname, navigate, token]);
 
 	return <Outlet />;
 }
