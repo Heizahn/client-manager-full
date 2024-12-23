@@ -4,7 +4,7 @@ import ClientRow from './client-row';
 export default function ClientsTable() {
 	const { filterClients } = useClientsContext();
 	return (
-		<div className='max-h-[calc(100vh_-_8.5rem)] overflow-y-auto scrollbar-none rounded-b-md'>
+		<div className='max-h-[calc(100vh_-_8.5rem)] overflow-auto scrollbar-none scroll-smooth rounded-b-md'>
 			<table className='w-full bg-gray-800 '>
 				<thead className='sticky top-0 bg-gray-800 mt-2'>
 					<tr className='text-left text-lg'>
