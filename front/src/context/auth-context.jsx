@@ -1,13 +1,7 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-
-const AuthContext = createContext({
-	isLogged: true,
-	user: {},
-	setIsLogged: () => {},
-	logout: () => {},
-	login: () => {},
-});
+import PropTypes from 'prop-types';
+import { AuthContext } from './AuthContext';
 
 export function AuthProvider({ children }) {
 	const [isLogged, setIsLogged] = useState(true);
@@ -39,10 +33,6 @@ export function AuthProvider({ children }) {
 	);
 }
 
-export function useAuth() {
-	const context = useContext(AuthContext);
-	if (!context) {
-		throw new Error('useAuth must be used within a AuthProvider');
-	}
-	return context;
-}
+AuthProvider.propTypes = {
+	children: PropTypes.node.isRequired,
+};

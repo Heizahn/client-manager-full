@@ -2,11 +2,16 @@ import { schemaRouter } from './schema-validate';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useAuth } from '../../context/auth-context';
+import { useAuth } from '../../context/useAuth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSectorsNewClient } from '../../services/sectors';
-import { useFetchPost } from '../../hooks/useFetch';
+import { useFetchPost as FetchPost } from '../../hooks/useFetch';
 import ButtonSubmit from '../button-submit';
+import PropTypes from 'prop-types';
+
+NewRouter.propTypes = {
+	setShow: PropTypes.func.isRequired,
+};
 
 export default function NewRouter({ setShow }) {
 	const [loading, setLoading] = useState(false);
@@ -17,7 +22,7 @@ export default function NewRouter({ setShow }) {
 	const clientQuery = useQueryClient();
 
 	const mutation = useMutation({
-		mutationFn: async (data) => useFetchPost(`/api/routers`, data),
+		mutationFn: async (data) => FetchPost(`/api/routers`, data),
 		onSuccess: () => {
 			toast.success('Router creado exitosamente');
 			clientQuery.invalidateQueries('routers');
@@ -78,7 +83,7 @@ export default function NewRouter({ setShow }) {
 							onInput={(e) =>
 								(e.target.value = e.target.value
 									.toUpperCase()
-									.replace(/[^A-Z0-9\_]/g, ''))
+									.replace(/[^A-Z0-9_]/g, ''))
 							}
 							className='w-full rounded-md px-2 py-1 outline-2 outline-gray-600 text-gray-950'
 						/>

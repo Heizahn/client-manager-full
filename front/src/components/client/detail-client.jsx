@@ -1,4 +1,4 @@
-import { useClientDetail } from '../../context/client-detail-context';
+import { useClientDetail } from '../../context/useClientDetail';
 import DetailContainer from './detail-container';
 import Detail from './detail';
 import { formatMoney } from '../../hooks/format-money';
@@ -9,37 +9,35 @@ import { useSectorsNewClient } from '../../services/sectors';
 import { schemaValidate } from './new-client/validate';
 import { identificationToInitials, nameToInitials } from './new-client/functions';
 import { useServicesNewClient } from '../../services/services';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as Yup from 'yup';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useFetchPatch } from '../../hooks/useFetch';
+import { useFetchPatch as FetchPatch } from '../../hooks/useFetch';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
 export default function DetailClient({ client }) {
-	const {
-		view: { details, edit },
-		setTriggerSubmit,
-		setView,
-	} = useClientDetail();
+	const { active, setActive, setTriggerSubmit } = useClientDetail();
 
 	const { data: routers, isLoading: isLoadingRouters } = useRoutersNewClient();
 	const { data: sectors, isLoading: isLoadingSectors } = useSectorsNewClient();
 	const { data: services, isLoading: isLoadingServices } = useServicesNewClient();
 	const clientQuery = useQueryClient();
+	const handleSubmitRef = useRef();
+
+	useEffect(() => {
+		if (handleSubmitRef.current) {
+			setTriggerSubmit(() => handleSubmitRef.current);
+		}
+	}, [setTriggerSubmit]);
 
 	const mutation = useMutation({
-		mutationFn: (data) => useFetchPatch(`/api/clients/update/${client.id}`, data),
+		mutationFn: (data) => FetchPatch(`/api/clients/update/${client.id}`, data),
 		onSuccess: () => {
 			toast.success('Cliente actualizado exitosamente');
 			clientQuery.invalidateQueries(['client', client.id]);
 			clientQuery.refetchQueries(['clients', 'sectors', 'services', 'routers']);
-			setView({
-				details: true,
-				edit: false,
-				services: false,
-				payments: false,
-				statistics: false,
-			});
+			setActive('details');
 		},
 		onError: (err) => {
 			toast.error(err.message);
@@ -60,7 +58,7 @@ export default function DetailClient({ client }) {
 		});
 	};
 
-	return client ? (
+	return active === 'details' || active === 'edit' ? (
 		<Formik
 			initialValues={{
 				nombre: client.nombre.split(' ')[0],
@@ -89,16 +87,14 @@ export default function DetailClient({ client }) {
 			onSubmit={Submit}
 		>
 			{({ handleSubmit }) => {
-				useEffect(() => {
-					setTriggerSubmit(() => handleSubmit);
-				}, [handleSubmit, setTriggerSubmit]);
+				handleSubmitRef.current = handleSubmit;
 
 				return (
 					<Form>
 						<div className='flex flex-wrap bg-gray-800 px-4 pb-8 pt-4 rounded-b-md'>
 							<div className='w-72 lg:w-1/3 px-4 py-2 flex flex-col gap-1'>
 								<DetailContainer title='Datos Personales'>
-									{details && (
+									{active === 'details' && (
 										<>
 											<Detail title='Nombre:' label={client.nombre} />
 											<Detail
@@ -107,7 +103,7 @@ export default function DetailClient({ client }) {
 											/>
 										</>
 									)}
-									{edit && (
+									{active === 'edit' && (
 										<>
 											<Detail title='Nombre:'>
 												<div className='grid grid-cols-2 gap-2'>
@@ -139,7 +135,7 @@ export default function DetailClient({ client }) {
 							</div>
 							<div className='w-72 lg:w-1/3 px-4 py-2'>
 								<DetailContainer title='Contacto'>
-									{details && (
+									{active === 'details' && (
 										<>
 											<Detail
 												title='Teléfono:'
@@ -148,7 +144,7 @@ export default function DetailClient({ client }) {
 											/>
 										</>
 									)}
-									{edit && (
+									{active === 'edit' && (
 										<Detail title='Teléfono:'>
 											<Field
 												name='telefono'
@@ -161,7 +157,7 @@ export default function DetailClient({ client }) {
 							</div>
 							<div className='w-72 lg:w-1/3 px-4 py-2'>
 								<DetailContainer title='Ubicación'>
-									{details && (
+									{active === 'details' && (
 										<>
 											<Detail
 												title='Sector:'
@@ -175,7 +171,7 @@ export default function DetailClient({ client }) {
 										</>
 									)}
 
-									{edit && (
+									{active === 'edit' && (
 										<>
 											<Detail title='Sector:'>
 												<Field
@@ -212,7 +208,7 @@ export default function DetailClient({ client }) {
 							</div>
 							<div className='w-72 lg:w-1/3 px-4 py-2'>
 								<DetailContainer title='Servicios'>
-									{details && (
+									{active === 'details' && (
 										<>
 											<Detail
 												title='Router:'
@@ -229,7 +225,7 @@ export default function DetailClient({ client }) {
 											/>
 										</>
 									)}
-									{edit && (
+									{active === 'edit' && (
 										<>
 											<Detail title='Router: '>
 												<Field
@@ -289,7 +285,7 @@ export default function DetailClient({ client }) {
 							</div>
 							<div className='w-72 lg:w-1/3 px-4 py-2'>
 								<DetailContainer title='Balance'>
-									{(details || edit) && (
+									{active === '' && (
 										<>
 											<Detail
 												title='Saldo:'
@@ -302,7 +298,7 @@ export default function DetailClient({ client }) {
 											/>
 										</>
 									)}
-									{details && (
+									{active === 'details' && (
 										<>
 											<Detail
 												title='Dia de Corte:'
@@ -310,7 +306,7 @@ export default function DetailClient({ client }) {
 											/>
 										</>
 									)}
-									{edit && (
+									{active === 'edit' && (
 										<>
 											<Detail title='Dia de Corte:'>
 												<Field
@@ -328,7 +324,7 @@ export default function DetailClient({ client }) {
 							</div>
 							<div className='w-72 lg:w-1/3 px-4 py-2'>
 								<DetailContainer title='Estado'>
-									{(details || edit) && (
+									{(active === 'details' || active === 'edit') && (
 										<>
 											<Detail
 												title='Estado:'
@@ -360,3 +356,7 @@ export default function DetailClient({ client }) {
 		</Formik>
 	) : null;
 }
+
+DetailClient.propTypes = {
+	client: PropTypes.object.isRequired,
+};

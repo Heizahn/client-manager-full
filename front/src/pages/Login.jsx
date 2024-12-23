@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import LoginForm from '../components/Forms/login/login-form';
-import { useAuth } from '../context/auth-context';
+import { useAuth } from '../context/useAuth';
 import { useNavigate } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
 
@@ -13,7 +13,7 @@ function Login() {
 		if (isLogged) {
 			navigate('/');
 		}
-	}, []);
+	}, [isLogged, navigate]);
 
 	return (
 		<main className='flex flex-col items-center justify-center h-screen'>

@@ -1,5 +1,4 @@
-'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { InitialValues, schemaValidate } from './validate';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -8,9 +7,10 @@ import ButtonSubmit from '../../button-submit';
 import { useServicesNewClient } from '../../../services/services';
 import { useSectorsNewClient } from '../../../services/sectors';
 import { useRoutersNewClient } from '../../../services/routers';
-import { useAuth } from '../../../context/auth-context';
-import { useFetchPost } from '../../../hooks/useFetch';
+import { useAuth } from '../../../context/useAuth';
+import { useFetchPost as FetchPost } from '../../../hooks/useFetch';
 import { identificationToInitials, nameToInitials } from './functions';
+import PropTypes from 'prop-types';
 
 export default function NewClient({ setShow }) {
 	const { user } = useAuth();
@@ -19,7 +19,7 @@ export default function NewClient({ setShow }) {
 	const clientQuery = useQueryClient();
 
 	const mutation = useMutation({
-		mutationFn: (data) => useFetchPost('/api/clients', data),
+		mutationFn: (data) => FetchPost('/api/clients', data),
 		onSuccess: () => {
 			toast.success('Cliente creado exitosamente');
 			clientQuery.invalidateQueries('clients');
@@ -438,3 +438,7 @@ export default function NewClient({ setShow }) {
 		</div>
 	);
 }
+
+NewClient.propTypes = {
+	setShow: PropTypes.func.isRequired,
+};

@@ -1,5 +1,4 @@
 import { jwtDecode } from 'jwt-decode';
-import { useAuth } from '../context/auth-context';
 
 export async function login(data) {
 	const apiUrl = import.meta.env.VITE_API_URL;

@@ -1,16 +1,13 @@
 import { formatMoney } from '../../hooks/format-money';
 import Breadcrumbs from '../Breadcrumbs';
 import NavCliente from './nav-client';
-import { useClientDetail } from '../../context/client-detail-context';
+import { useClientDetail } from '../../context/useClientDetail';
 import LinkGoogleMaps from '../../hooks/link-google-maps';
 import ActionClient from './action-client';
+import PropTypes from 'prop-types';
 
 export default function ClientHeader({ client, id, routerIp }) {
-	const {
-		view: { details, edit },
-		setView,
-		triggerSubmit,
-	} = useClientDetail();
+	const { active, setActive, triggerSubmit } = useClientDetail();
 	return (
 		<>
 			<div className='flex flex-row justify-center items-center py-2 rounded-md bg-gray-800  '>
@@ -72,24 +69,16 @@ export default function ClientHeader({ client, id, routerIp }) {
 						</div>
 					</div>
 					<div className='flex flex-row items-center gap-6 mr-2'>
-						{details && (
+						{active === 'details' && (
 							<button
 								className='hover:underline hover:underline-offset-4'
-								onClick={() =>
-									setView({
-										details: false,
-										edit: true,
-										services: false,
-										payments: false,
-										statistics: false,
-									})
-								}
+								onClick={() => setActive('edit')}
 							>
 								Editar
 							</button>
 						)}
 
-						{edit && (
+						{active === 'edit' && (
 							<>
 								<button
 									type='submit'
@@ -99,29 +88,30 @@ export default function ClientHeader({ client, id, routerIp }) {
 									Guardar
 								</button>
 								<button
-									className='underline underline-offset-4'
-									onClick={() =>
-										setView({
-											details: true,
-											edit: false,
-											services: false,
-											payments: false,
-											statistics: false,
-										})
-									}
+									className='hover:underline hover:underline-offset-4'
+									onClick={() => setActive('details')}
 								>
 									Cancelar
 								</button>
 							</>
 						)}
-						{!client.estado ? (
-							<ActionClient id={id} action={'reactivate'} router={routerIp}>
-								Activar
-							</ActionClient>
-						) : (
-							<ActionClient id={id} action={'suspend'} router={routerIp}>
-								Suspender
-							</ActionClient>
+
+						{active === 'details' && (
+							<>
+								{!client.estado ? (
+									<ActionClient
+										id={id}
+										action={'reactivate'}
+										router={routerIp}
+									>
+										Activar
+									</ActionClient>
+								) : (
+									<ActionClient id={id} action={'suspend'} router={routerIp}>
+										Suspender
+									</ActionClient>
+								)}
+							</>
 						)}
 					</div>
 				</div>
@@ -130,3 +120,9 @@ export default function ClientHeader({ client, id, routerIp }) {
 		</>
 	);
 }
+
+ClientHeader.propTypes = {
+	client: PropTypes.object.isRequired,
+	id: PropTypes.string.isRequired,
+	routerIp: PropTypes.string.isRequired,
+};

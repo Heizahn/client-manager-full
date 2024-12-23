@@ -6,31 +6,26 @@ import { useClientById } from '../services/clients';
 
 export default function ClientDetail() {
 	const { id } = useParams();
-	const { data, error, isLoading } = useClientById(id);
+	const { data: client, error, isLoading } = useClientById(id);
 
-	if (error) {
-		return <div>Error</div>;
-	}
+	if (isLoading) return <div>Loading</div>;
+	if (error) return <div>Error: {error.message}</div>;
 
-	if (isLoading) {
-		return <div>Loading</div>;
-	}
-
-	document.title = data.nombre;
+	document.title = client.nombre;
 	return (
 		<main className='flex flex-col md:overflow-hidden'>
 			<ClientDetailProvider>
 				<ClientHeader
 					id={id}
 					client={{
-						nombre: data.nombre,
-						direccion: data.direccion,
-						saldo: data.saldo,
-						estado: data.estado,
+						nombre: client.nombre,
+						direccion: client.direccion,
+						saldo: client.saldo,
+						estado: client.estado,
 					}}
-					routerIp={data.router.ip}
+					routerIp={client.router.ip}
 				/>
-				<DetailClient client={data} />
+				<DetailClient client={client} />
 			</ClientDetailProvider>
 		</main>
 	);

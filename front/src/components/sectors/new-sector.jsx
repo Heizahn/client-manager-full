@@ -4,8 +4,9 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import ButtonSubmit from '../button-submit';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useFetchPost } from '../../hooks/useFetch';
-import { useAuth } from '../../context/auth-context';
+import { useFetchPost as FetchPost } from '../../hooks/useFetch';
+import { useAuth } from '../../context/useAuth';
+import PropTypes from 'prop-types';
 
 export default function NewSector({ setShow }) {
 	const [loading, setLoading] = useState(false);
@@ -13,7 +14,7 @@ export default function NewSector({ setShow }) {
 	const { user } = useAuth();
 
 	const mutation = useMutation({
-		mutationFn: (data) => useFetchPost('/api/sectors', data),
+		mutationFn: (data) => FetchPost('/api/sectors', data),
 		onSuccess: () => {
 			toast.success('Sector creado exitosamente');
 			clientQuery.invalidateQueries('sectors');
@@ -72,3 +73,7 @@ export default function NewSector({ setShow }) {
 		</div>
 	);
 }
+
+NewSector.propTypes = {
+	setShow: PropTypes.func.isRequired,
+};

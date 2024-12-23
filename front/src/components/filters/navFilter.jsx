@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useClientsContext } from '../../context/clients-context';
+import { useEffect, useState, useCallback } from 'react';
+import { useClientsContext } from '../../context/useClientsContext';
+import PropTypes from 'prop-types';
 
 function NavFilter({ clients }) {
 	const [active, setActive] = useState({
@@ -10,7 +11,7 @@ function NavFilter({ clients }) {
 	});
 	const { setClients } = useClientsContext();
 
-	const handlerAll = () => {
+	const handlerAll = useCallback(() => {
 		setClients(clients);
 		setActive({
 			all: true,
@@ -18,7 +19,7 @@ function NavFilter({ clients }) {
 			defaulter: false,
 			suspended: false,
 		});
-	};
+	}, [clients, setClients]);
 
 	const handlerSolvent = () => {
 		setClients(clients.filter((client) => client.saldo >= 0 && client.estado));
@@ -52,7 +53,7 @@ function NavFilter({ clients }) {
 
 	useEffect(() => {
 		handlerAll();
-	}, [clients.length]);
+	}, [handlerAll]);
 
 	return (
 		<nav className='flex flex-row gap-6' aria-label='Filtro de Clientes'>
@@ -88,6 +89,9 @@ function NavFilter({ clients }) {
 }
 
 export default NavFilter;
+NavFilter.propTypes = {
+	clients: PropTypes.array.isRequired,
+};
 
 function FilterStatus({ Count, title, onClick, isActive, className }) {
 	return (
@@ -102,3 +106,11 @@ function FilterStatus({ Count, title, onClick, isActive, className }) {
 		</button>
 	);
 }
+
+FilterStatus.propTypes = {
+	Count: PropTypes.number.isRequired,
+	title: PropTypes.string.isRequired,
+	onClick: PropTypes.func.isRequired,
+	isActive: PropTypes.bool.isRequired,
+	className: PropTypes.string,
+};

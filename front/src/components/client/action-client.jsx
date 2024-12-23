@@ -1,11 +1,12 @@
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useFetchPut } from '../../hooks/useFetch';
+import { useFetchPut as FetchPut } from '../../hooks/useFetch';
+import PropTypes from 'prop-types';
 
 export default function ActionClient({ id, children, action, router }) {
 	const clientQuery = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: () => useFetchPut(`/api/clients/${action}/${id}`, { ip: router }),
+		mutationFn: () => FetchPut(`/api/clients/${action}/${id}`, { ip: router }),
 		onSuccess: () => {
 			toast.success(
 				`Cliente ${action === 'suspend' ? 'suspendido' : 'reactivado'} exitosamente`,
@@ -28,3 +29,10 @@ export default function ActionClient({ id, children, action, router }) {
 		</button>
 	);
 }
+
+ActionClient.propTypes = {
+	id: PropTypes.string.isRequired,
+	children: PropTypes.node.isRequired,
+	action: PropTypes.string.isRequired,
+	router: PropTypes.string.isRequired,
+};
