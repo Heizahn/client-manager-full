@@ -33,6 +33,9 @@ export class Payment {
 	@Column({ type: 'text' })
 	referencia: string;
 
+	@Column({ type: 'text' })
+	tipo: string;
+
 	@Column()
 	estado: boolean;
 

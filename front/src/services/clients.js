@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { useFetchGet } from '../hooks/useFetch';
+import { useFetchGet as FetchGet } from '../hooks/useFetch';
 
 export const useClients = () => {
 	return useQuery({
 		queryKey: ['clients'],
-		queryFn: () => useFetchGet('/api/clients'),
+		queryFn: () => FetchGet('/api/clients'),
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
 		refetchOnReconnect: true,
@@ -14,7 +14,7 @@ export const useClients = () => {
 export const useClientById = (id) => {
 	return useQuery({
 		queryKey: ['client', id],
-		queryFn: () => useFetchGet(`/api/clients/${id}`),
+		queryFn: () => FetchGet(`/api/clients/${id}`),
 		refetchOnWindowFocus: false,
 		refetchOnMount: false,
 		refetchOnReconnect: true,

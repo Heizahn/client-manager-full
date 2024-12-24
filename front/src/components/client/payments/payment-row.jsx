@@ -8,10 +8,14 @@ PaymentRow.propTypes = {
 		motivo: PropTypes.string.isRequired,
 		created_at: PropTypes.string.isRequired,
 		tipo: PropTypes.string.isRequired,
-		created_by: PropTypes.string.isRequired,
-		recibido_por: PropTypes.string.isRequired,
-		monto_ref: PropTypes.number.isRequired,
-		monto_bs: PropTypes.number.isRequired,
+		created_by: PropTypes.shape({
+			nombre: PropTypes.string,
+		}),
+		recibido_por: PropTypes.shape({
+			nombre: PropTypes.string,
+		}),
+		monto_ref: PropTypes.string.isRequired,
+		monto_bs: PropTypes.string.isRequired,
 		referencia: PropTypes.string.isRequired,
 		estado: PropTypes.bool.isRequired,
 	}).isRequired,
@@ -23,8 +27,8 @@ export default function PaymentRow({ payment }) {
 			<td className='text-left py-1 pl-4'>{payment.motivo}</td>
 			<td>{formatDate(new Date(payment.created_at))}</td>
 			<td>{payment.tipo}</td>
-			<td>{payment.created_by}</td>
-			<td>{payment.recibido_por}</td>
+			<td>{payment.created_by?.nombre || 'N/A'}</td>
+			<td>{payment.recibido_por?.nombre || 'N/A'}</td>
 			<td>{'$' + formatMoney(payment.monto_ref)}</td>
 			<td>{formatMoney(payment.monto_bs) + ' Bs'}</td>
 			<td>{payment.referencia}</td>

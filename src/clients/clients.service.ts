@@ -62,6 +62,8 @@ export class ClientsService {
 				'created_by',
 				'service_receivable',
 				'payments',
+				'payments.recibido_por',
+				'payments.created_by',
 			],
 		});
 	}

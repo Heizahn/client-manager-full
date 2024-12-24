@@ -26,6 +26,9 @@ export class Profile {
 	@OneToMany(() => Payment, (payment) => payment.created_by)
 	payments: Payment[];
 
+	@OneToMany(() => Payment, (payment) => payment.recibido_por)
+	payments_received: Payment[];
+
 	@OneToMany(() => Service, (service) => service.created_by)
 	services: Service[];
 

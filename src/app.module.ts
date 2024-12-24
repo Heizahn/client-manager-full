@@ -16,6 +16,7 @@ import { ServiceReceivableModule } from './service_receivable/service_receivable
 import { RoutersModule } from './routers/routers.module';
 import { SectorsModule } from './sectors/sectors.module';
 import { AuthModule } from './auth/auth.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
 	imports: [
@@ -43,6 +44,7 @@ import { AuthModule } from './auth/auth.module';
 		RoutersModule,
 		SectorsModule,
 		AuthModule,
+		PaymentsModule,
 	],
 })
 export class AppModule {}

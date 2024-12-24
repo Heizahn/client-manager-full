@@ -2,12 +2,14 @@ import PropTypes from 'prop-types';
 import PaymentRow from './payment-row';
 import { useClientDetail } from '../../../context/useClientDetail';
 import { useCallback, useEffect, useState } from 'react';
+import NewPay from '../../Forms/payments/new-pay';
 
 PaymentsTable.propTypes = {
 	paymentClient: PropTypes.array.isRequired,
+	clientId: PropTypes.string.isRequired,
 };
 
-export default function PaymentsTable({ paymentClient }) {
+export default function PaymentsTable({ paymentClient, clientId }) {
 	const { active } = useClientDetail();
 	const [search, setSearch] = useState('');
 	const [show, setShow] = useState(false);
@@ -46,6 +48,7 @@ export default function PaymentsTable({ paymentClient }) {
 							>
 								Agregar
 							</button>
+							{show && <NewPay clientId={clientId} setShow={setShow} />}
 						</>
 					</div>
 				</div>
