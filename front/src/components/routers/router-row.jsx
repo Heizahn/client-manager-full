@@ -1,3 +1,9 @@
+import { PropTypes } from 'prop-types';
+
+RouterRow.propTypes = {
+	router: PropTypes.object.isRequired,
+};
+
 export default function RouterRow({ router }) {
 	const handleClick = (id) => {
 		alert(id);

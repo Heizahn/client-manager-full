@@ -1,5 +1,10 @@
 import { formatDate } from '../../hooks/format-date';
 import { formatMoney } from '../../hooks/format-money';
+import { PropTypes } from 'prop-types';
+
+RouterRow.propTypes = {
+	service: PropTypes.object.isRequired,
+};
 
 export default function RouterRow({ service }) {
 	const handlerClick = (id) => {
