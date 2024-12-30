@@ -15,7 +15,6 @@ export default function ClientDetail() {
 
 	document.title = client.nombre;
 
-	console.log(client);
 	return (
 		<main className='flex flex-col md:overflow-hidden'>
 			<ClientDetailProvider>

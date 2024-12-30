@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 // import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
 import { Payment } from '../entities/payment.entity';
 import { ClientsService } from 'src/clients/clients.service';
 import { Client } from 'src/entities/client.entity';
 import { Profile } from 'src/entities/profile.entity';
+import { ServiceReceivable } from 'src/entities/service_receivable.entity';
 
 @Injectable()
 export class PaymentsService {
@@ -18,6 +19,8 @@ export class PaymentsService {
 		@InjectRepository(Profile)
 		private profileRepository: Repository<Profile>,
 		private clientsService: ClientsService,
+		@InjectRepository(ServiceReceivable)
+		private serviceReceivableRepository: Repository<ServiceReceivable>,
 	) {}
 
 	async create(createPaymentDto: CreatePaymentDto) {
@@ -35,23 +38,46 @@ export class PaymentsService {
 		let credit = 0;
 
 		if (createPaymentDto.service_receivable_id) {
-			const resInvoice = await this.paymentRepository.query(
-				`SELECT deuda FROM service_receivable WHERE id = '${createPaymentDto.service_receivable_id}'`,
-			);
+			const resInvoice = await this.serviceReceivableRepository.findOne({
+				where: { id: createPaymentDto.service_receivable_id },
+			});
 
-			const debt = Number(resInvoice[0].deuda);
+			const debt = Number(resInvoice.deuda);
 
 			const newDebt = debt + Math.round(createPaymentDto.monto_ref * 100);
 
 			if (newDebt <= 0) {
-				await this.paymentRepository.query(
-					`UPDATE service_receivable SET deuda = '${newDebt}' WHERE id = '${createPaymentDto.service_receivable_id}'`,
+				await this.serviceReceivableRepository.update(
+					{ id: createPaymentDto.service_receivable_id },
+					{ deuda: newDebt },
 				);
 			} else {
 				credit = newDebt;
-				await this.paymentRepository.query(
-					`UPDATE service_receivable SET deuda = 0 WHERE id = '${createPaymentDto.service_receivable_id}'`,
+				await this.serviceReceivableRepository.update(
+					{ id: createPaymentDto.service_receivable_id },
+					{ deuda: 0 },
 				);
+				const servicesReceivable = await this.serviceReceivableRepository.find({
+					where: { client: { id: client.id }, deuda: LessThan(0) },
+				});
+
+				if (servicesReceivable.length > 0) {
+					for (const service of servicesReceivable) {
+						credit += service.deuda;
+
+						if (credit <= 0) {
+							await this.serviceReceivableRepository.update(
+								{ id: service.id },
+								{ deuda: credit },
+							);
+						} else {
+							await this.serviceReceivableRepository.update(
+								{ id: service.id },
+								{ deuda: 0 },
+							);
+						}
+					}
+				}
 			}
 		} else {
 			credit = Math.round(createPaymentDto.monto_ref * 100);
