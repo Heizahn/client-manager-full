@@ -5,12 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { reactivateMK, suspendMK } from './mikrotik.connect';
+import { ServiceReceivable } from 'src/entities/service_receivable.entity';
 
 @Injectable()
 export class ClientsService {
 	constructor(
 		@InjectRepository(Client)
 		private readonly clientRepository: Repository<Client>,
+		@InjectRepository(ServiceReceivable)
+		private readonly serviceReceivableRepository: Repository<ServiceReceivable>,
 	) {}
 
 	async create(createClientDto: CreateClientDto) {
@@ -51,7 +54,7 @@ export class ClientsService {
 	}
 
 	async findOne(id: string): Promise<Client> {
-		return await this.clientRepository.findOne({
+		const client = await this.clientRepository.findOne({
 			where: {
 				id,
 			},
@@ -60,12 +63,18 @@ export class ClientsService {
 				'plan',
 				'router',
 				'created_by',
-				'service_receivable',
 				'payments',
 				'payments.recibido_por',
 				'payments.created_by',
 			],
 		});
+
+		client.service_receivable = await this.serviceReceivableRepository.find({
+			where: { client: { id } },
+			order: { created_at: 'DESC' },
+		});
+
+		return client;
 	}
 
 	async update(client: UpdateClientDto) {

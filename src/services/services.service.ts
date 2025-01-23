@@ -39,8 +39,4 @@ export class ServicesService {
 	async findOneByNewClient() {
 		return this.serviceRepository.query(`SELECT id, nombre_service FROM services`);
 	}
-
-	findOne(id: number) {
-		return `This action returns a #${id} service`;
-	}
 }

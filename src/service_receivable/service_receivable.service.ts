@@ -39,6 +39,7 @@ export class ServiceReceivableService {
 		const payment = await this.paymentRepository.find({
 			where: {
 				saldo: MoreThan(0),
+				client,
 			},
 			order: {
 				created_at: 'ASC',
@@ -90,9 +91,5 @@ export class ServiceReceivableService {
 		} catch (err) {
 			throw new Error(err.message);
 		}
-	}
-
-	findOne(id: number) {
-		return `This action returns a #${id} serviceReceivable`;
 	}
 }

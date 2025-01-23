@@ -30,9 +30,7 @@ export default function ClientDetail() {
 				/>
 				<DetailClient client={client} />
 				<ServiceReceivableTable
-					servicesReceivables={client.service_receivable.sort(
-						(a, b) => new Date(b.created_at) - new Date(a.created_at),
-					)}
+					servicesReceivables={client.service_receivable}
 					clientId={id}
 				/>
 				<PaymentsTable

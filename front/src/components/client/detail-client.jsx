@@ -285,7 +285,7 @@ export default function DetailClient({ client }) {
 							</div>
 							<div className='w-72 lg:w-1/3 px-4 py-2'>
 								<DetailContainer title='Balance'>
-									{active === '' && (
+									{active === 'details' && (
 										<>
 											<Detail
 												title='Saldo:'
@@ -296,10 +296,7 @@ export default function DetailClient({ client }) {
 														: 'text-green-500'
 												}
 											/>
-										</>
-									)}
-									{active === 'details' && (
-										<>
+
 											<Detail
 												title='Dia de Corte:'
 												label={String(client.dia_corte)}

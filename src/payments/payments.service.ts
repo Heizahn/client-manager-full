@@ -58,7 +58,7 @@ export class PaymentsService {
 					{ deuda: 0 },
 				);
 				const servicesReceivable = await this.serviceReceivableRepository.find({
-					where: { client: { id: client.id }, deuda: LessThan(0) },
+					where: { client, deuda: LessThan(0) },
 				});
 
 				if (servicesReceivable.length > 0) {
@@ -95,8 +95,28 @@ export class PaymentsService {
 			created_by: profile,
 		});
 
+		// console.log(payment);
 		await this.paymentRepository.save(payment);
 		await this.clientsService.updateSaldo(createPaymentDto.client_id);
 		return { message: 'Pago registrado exitosamente' };
+	}
+
+	async sendMessage(id: string) {
+		const payment = await this.paymentRepository.findOne({
+			where: { client: { id } },
+			relations: { client: true, service_receivable: true },
+			order: { created_at: 'DESC' },
+		});
+
+		const data = {
+			client: payment.client.nombre,
+			monto_ref: payment.monto_ref,
+			monto_bs: payment.monto_bs,
+			motivo: payment.motivo,
+			referencia: payment.referencia,
+			service_receivable: payment.service_receivable,
+		};
+
+		console.log(data);
 	}
 }

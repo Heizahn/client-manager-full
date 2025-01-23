@@ -19,9 +19,4 @@ export class ServiceReceivableController {
 	findAll(@Body() { id }: { id: string }) {
 		return this.serviceReceivableService.findAll(id);
 	}
-
-	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.serviceReceivableService.findOne(+id);
-	}
 }

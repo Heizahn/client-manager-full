@@ -31,8 +31,8 @@ export default function PaymentsTable({ paymentClient, clientId }) {
 	}, [filterPayments]);
 	return (
 		active === 'payments' && (
-			<div className='bg-gray-800 w-full max-h-[calc(100vh_-_22rem)] overflow-y-auto scrollbar-none rounded-b-md'>
-				<div className='flex justify-between items-center px-4 py-2'>
+			<div className='bg-gray-800 w-full max-h-[calc(100vh_-_17.1rem)] overflow-y-auto scrollbar-none rounded-b-md'>
+				<div className='flex justify-between items-center px-4 py-2 bg-gray-800 z-10'>
 					<h2 className='text-lg font-bold text-center'>Pagos</h2>
 					<div className='flex justify-end items-center gap-2'>
 						<input
@@ -53,7 +53,7 @@ export default function PaymentsTable({ paymentClient, clientId }) {
 					</div>
 				</div>
 				<table className='w-full table-auto '>
-					<thead className='sticky top-0 mt-2'>
+					<thead className='sticky top-12 mt-2 bg-gray-800'>
 						<tr className='text-left text-lg '>
 							<th className='pl-4 py-2'>Motivo</th>
 							<th>Fecha Creación</th>

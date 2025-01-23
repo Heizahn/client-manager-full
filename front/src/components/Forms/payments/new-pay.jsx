@@ -33,6 +33,13 @@ export default function NewPay({ clientId, setShow }) {
 			queryClient.refetchQueries({ queryKey: ['clients'] });
 			toast.success('Pago registrado correctamente');
 			setShow(false);
+			FetchPost('/api/payments/send-message/' + clientId)
+				.then(() => {
+					toast.info('Mensaje enviado');
+				})
+				.catch((error) => {
+					toast.error(error.message);
+				});
 		},
 		onError: (error) => {
 			toast.error(error.message);
@@ -40,7 +47,6 @@ export default function NewPay({ clientId, setShow }) {
 		},
 	});
 
-	console.log(user);
 	useEffect(() => {
 		if (!loadingClient && client?.service_receivable) {
 			setServices(
@@ -53,11 +59,12 @@ export default function NewPay({ clientId, setShow }) {
 
 	if (loadingClient || loadingProfiles)
 		return (
-			<div className='absolute top-0 left-0 w-screen h-screen flex flex-col gap-4 items-center justify-center bg-black/50 z-20'>
+			<div className='absolute top-0 left-0 w-screen h-screen flex flex-col gap-4 items-center justify-center bg-black/50 z-50'>
 				<SkeletonPay />
 			</div>
 		);
 
+	console.log(services);
 	return (
 		<div className='absolute top-0 left-0 w-screen h-screen flex flex-col gap-4 items-center justify-center bg-black/50 z-20'>
 			<Formik
@@ -192,6 +199,7 @@ export default function NewPay({ clientId, setShow }) {
 										)?.motivo)
 									}
 								>
+									<option value=''>Seleccione un servicio</option>
 									{services.map((service) => (
 										<option key={service.id} value={service.id}>
 											{service.motivo}
