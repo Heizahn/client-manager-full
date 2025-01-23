@@ -91,7 +91,7 @@ export class ClientsService {
 
 			await suspendMK({
 				clientIp: res[0].ipv4,
-				clientUser: res[0].nombre,
+				clientUser: String(res[0].nombre).replaceAll(/ñ/gi, 'n').toUpperCase(),
 				routerIp: ip,
 			});
 
