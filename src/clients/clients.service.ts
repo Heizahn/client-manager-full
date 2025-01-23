@@ -42,10 +42,12 @@ export class ClientsService {
 			c."dia_corte",	
             p."nombre_service",
             c."saldo",
-            c."estado"
+            c."estado",
+			r."ip"
           FROM "clients" c
           JOIN "sectors" s ON c."sectorId"= s."id"
           JOIN "services" p ON c."planId"= p."id"
+		  JOIN "routers" r ON c."routerId"= r."id"
 		  ORDER BY c."nombre" ASC
         `,
 			);

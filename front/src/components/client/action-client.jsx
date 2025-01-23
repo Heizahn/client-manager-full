@@ -24,7 +24,10 @@ export default function ActionClient({ id, children, action, router }) {
 	};
 
 	return (
-		<button onClick={handleClick} className='hover:underline hover:underline-offset-4'>
+		<button
+			onClick={handleClick}
+			className={`${typeof children === 'string' ? 'hover:underline hover:underline-offset-4' : 'bg-blue-600 text-white px-1 py-0.5 rounded-md hover:bg-blue-700 transition-all duration-300 ease-linear'}`}
+		>
 			{children}
 		</button>
 	);

@@ -6,6 +6,9 @@ import { useState } from 'react';
 import NewPay from '../../Forms/payments/new-pay';
 import ShowForm from '../../show-form';
 import PaidIcon from '@mui/icons-material/Paid';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import ActionClient from '../action-client';
 
 export default function ClientRow({ client }) {
 	const navigate = useNavigate();
@@ -58,10 +61,25 @@ export default function ClientRow({ client }) {
 				>
 					{!client.estado ? 'Suspendido' : 'Activo'}
 				</td>
-				<td className='cursor-default'>
+				<td className='cursor-default flex gap-1'>
 					<ShowForm title={<PaidIcon />} show={show} setShow={setShow}>
 						<NewPay clientId={client.id} setShow={setShow} />
 					</ShowForm>
+					<>
+						{!client.estado ? (
+							<ActionClient
+								id={client.id}
+								action={'reactivate'}
+								router={client.ip}
+							>
+								<CheckCircleIcon />
+							</ActionClient>
+						) : (
+							<ActionClient id={client.id} action={'suspend'} router={client.ip}>
+								<CancelIcon />
+							</ActionClient>
+						)}
+					</>
 				</td>
 			</tr>
 		</>
@@ -81,5 +99,6 @@ ClientRow.propTypes = {
 		nombre_service: PropTypes.string.isRequired,
 		saldo: PropTypes.number.isRequired,
 		estado: PropTypes.bool.isRequired,
+		ip: PropTypes.string.isRequired,
 	}).isRequired,
 };

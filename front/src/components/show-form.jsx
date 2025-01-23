@@ -12,7 +12,7 @@ export default function ShowForm({ title, children, show, setShow }) {
 		<>
 			<button
 				onClick={() => setShow(!show)}
-				className={`bg-blue-600 text-white ${typeof title === 'string' ? 'px-4' : 'px-2'} py-0.5 rounded-md hover:bg-blue-700 transition-all duration-300 ease-linear`}
+				className={`bg-blue-600 text-white ${typeof title === 'string' ? 'px-4' : 'px-1'} py-0.5 rounded-md hover:bg-blue-700 transition-all duration-300 ease-linear`}
 			>
 				{title}
 			</button>
