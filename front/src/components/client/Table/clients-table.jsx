@@ -13,6 +13,7 @@ export default function ClientsTable() {
 						<th>Telefono</th>
 						<th>Sector</th>
 						<th>IPV4</th>
+						<th>Corte</th>
 						<th>Plan</th>
 						<th>Saldo</th>
 						<th>Estado</th>

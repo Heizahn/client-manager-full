@@ -39,6 +39,7 @@ export class ClientsService {
             c."telefono",
             s."nombre_sector",
             c."ipv4",
+			c."dia_corte",	
             p."nombre_service",
             c."saldo",
             c."estado"
